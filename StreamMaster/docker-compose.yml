@@ -1,0 +1,37 @@
+version: '3'
+# Docker Compose for Titan Streaming Services
+services:
+  Galactic-QBT-Titan:
+    image: linuxserver/qbittorrent
+    container_name: QBT-Titan
+    network_mode: "container:NordNet-2"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+
+    volumes:
+      - ${QBT_CONFIG}:/config  
+      - ${TORRENT_TITAN}:/STorrent
+      - ${TORRENT_CACHE}:/GTorrent
+
+ # Galactic-Transmission:
+ #   image: linuxserver/transmission
+ #   container_name: Transmission-Titan
+ #   network_mode: "container:NordNet-2"
+ #   environment:
+ #     - PUID=${PUID}
+ #     - PGID=${PGID}
+ #     - TZ=${TIMEZONE}
+
+ #   volumes:
+ #     - ${TRANSMISSION_CONFIG}:/config  
+ #     - ${TORRENT_TITAN}:/STorrent
+ #     - ${TORRENT_CACHE}:/GTorrent
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: Galactic-watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
